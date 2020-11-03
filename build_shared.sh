@@ -51,7 +51,12 @@ for platform in $PLATFORMS; do \
         (
             if [ ! $only_build_for ] || [ $device = $only_build_for ] ; then
 
-                KERNEL_TMP_DEVICE=$KERNEL_TMP/${device}
+                # Don't override $KERNEL_TMP when set by manually
+                if [ ! "$build_directory" ] ; then
+                    KERNEL_TMP_DEVICE=$KERNEL_TMP-${device}
+                else
+                    KERNEL_TMP_DEVICE=${build_directory}
+                fi
                 # Keep kernel tmp when building for a specific device or when using keep tmp
                 [ ! "$keep_kernel_tmp" ] && [ ! "$only_build_for" ] && rm -rf "${KERNEL_TMP_DEVICE}"
                 mkdir -p "${KERNEL_TMP_DEVICE}"

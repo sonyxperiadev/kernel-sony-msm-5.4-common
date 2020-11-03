@@ -20,15 +20,17 @@ Usage: ${0##*/} [-k -d <device>]
 Options:
 -k              keep kernel tmp after build
 -d <device>     only build the kernel for <device>
+-O <directory>  build kernel in <directory>
 EOF
 }
 
 
-arguments=khd:
+arguments=khd:O:
 while getopts $arguments argument ; do
     case $argument in
         k) keep_kernel_tmp=t ;;
         d) only_build_for=$OPTARG;;
+        O) build_directory=$OPTARG;;
         h) usage; exit 0;;
         ?) usage; exit 1;;
     esac
@@ -55,4 +57,4 @@ MKDTIMG=$ANDROID_ROOT/out/host/linux-x86/bin/mkdtimg
 KERNEL_TOP=$ANDROID_ROOT/kernel/sony/msm-5.4
 # $KERNEL_TMP sub dir per script
 c=${0##*-}
-KERNEL_TMP=$ANDROID_ROOT/out/kernel-5.4/${c%%.sh}
+KERNEL_TMP=${build_directory:-$ANDROID_ROOT/out/kernel-5.4/${c%%.sh}}
