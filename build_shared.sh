@@ -20,9 +20,13 @@ for platform in $PLATFORMS; do \
     case $platform in
         sagami)
             DEVICE=$SAGAMI;
+            APENDED_DTB="false";
             DTBO="true";;
     esac
 
+    if [ $APENDED_DTB = "true" ]; then
+        dtb="-dtb"
+    fi
     for device in $DEVICE; do \
         (
             if [ ! $only_build_for ] || [ $device = $only_build_for ] ; then
@@ -50,7 +54,10 @@ for platform in $PLATFORMS; do \
                      >"$KERNEL_TMP"/build.log 2>&1;
 
                 echo "Copying new kernel image ..."
-                cp "$KERNEL_TMP/arch/arm64/boot/Image.gz-dtb" "$KERNEL_TOP/common-kernel/kernel-dtb-$device"
+                cp "$KERNEL_TMP/arch/arm64/boot/Image.gz$dtb" "$KERNEL_TOP/common-kernel/kernel$dtb-$device"
+                if [ $APENDED_DTB = "false" ]; then
+                   find "$KERNEL_TMP/arch/arm64/boot/dts/qcom/" -name *.dtb -exec cp {} "$KERNEL_TOP/common-kernel/" \;
+                fi
                 if [ $DTBO = "true" ]; then
                     # shellcheck disable=SC2046
                     # note: We want wordsplitting in this case.
