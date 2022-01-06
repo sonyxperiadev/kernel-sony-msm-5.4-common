@@ -20,10 +20,14 @@ for platform in $PLATFORMS; do \
     case $platform in
         sagami)
             DEVICE=$SAGAMI;
+            COMPRESSED="false";
             APENDED_DTB="false";
             DTBO="true";;
     esac
 
+    if [ $COMPRESSED = "true" ]; then
+        comp=".gz"
+    fi
     if [ $APENDED_DTB = "true" ]; then
         dtb="-dtb"
     fi
@@ -54,7 +58,7 @@ for platform in $PLATFORMS; do \
                      >"$KERNEL_TMP"/build.log 2>&1;
 
                 echo "Copying new kernel image ..."
-                cp "$KERNEL_TMP/arch/arm64/boot/Image.gz$dtb" "$KERNEL_TOP/common-kernel/kernel$dtb-$device"
+                cp "$KERNEL_TMP/arch/arm64/boot/Image$comp$dtb" "$KERNEL_TOP/common-kernel/kernel$dtb-$device"
                 if [ $APENDED_DTB = "false" ]; then
                    find "$KERNEL_TMP/arch/arm64/boot/dts/qcom/" -name *.dtb -exec cp {} "$KERNEL_TOP/common-kernel/" \;
                 fi
