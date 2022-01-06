@@ -17,10 +17,11 @@ for platform in $PLATFORMS; do \
 
     case $platform in
         sagami)
-            DEVICE=$SAGAMI;
-            COMPRESSED="false";
-            APENDED_DTB="false";
-            DTBO="true";;
+            DEVICE=$SAGAMI
+            COMPRESSED="false"
+            APENDED_DTB="false"
+            DTBO="true"
+            ;;
     esac
 
     if [ $COMPRESSED = "true" ]; then
