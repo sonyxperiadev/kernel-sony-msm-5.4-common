@@ -42,7 +42,7 @@ else
     ANDROID_ROOT="$ANDROID_BUILD_TOP"
 fi
 
-SAGAMI="pdx215"
+SAGAMI="pdx214 pdx215"
 
 PLATFORMS="sagami"
 
