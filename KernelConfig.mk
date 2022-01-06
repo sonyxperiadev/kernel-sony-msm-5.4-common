@@ -16,7 +16,14 @@ BUILD_KERNEL := false
 
 ifeq ($(BUILD_KERNEL),false)
 
-LOCAL_KERNEL := $(KERNEL_PATH)/common-kernel/kernel-dtb-$(TARGET_DEVICE)
+ifeq ($(BOARD_INCLUDE_DTB_IN_BOOTIMG), true)
+    # AOSP will concatenate all these into a single dtb.img
+    BOARD_PREBUILT_DTBIMAGE_DIR := $(KERNEL_PATH)/common-kernel/$(TARGET_DEVICE)/
+else
+    dtb := "-dtb"
+endif
+
+LOCAL_KERNEL := $(KERNEL_PATH)/common-kernel/kernel$(dtb)-$(TARGET_DEVICE)
 
 PRODUCT_COPY_FILES += \
     $(LOCAL_KERNEL):kernel

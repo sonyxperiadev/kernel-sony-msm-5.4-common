@@ -35,8 +35,12 @@ for platform in $PLATFORMS; do \
 
                 KERNEL_TMP=$KERNEL_TMP-${device}
                 # Keep kernel tmp when building for a specific device or when using keep tmp
-                [ ! "$keep_kernel_tmp" ] && [ ! "$only_build_for" ] &&rm -rf "${KERNEL_TMP}"
+                [ ! "$keep_kernel_tmp" ] && [ ! "$only_build_for" ] && rm -rf "${KERNEL_TMP}"
                 mkdir -p "${KERNEL_TMP}"
+
+                # In case this is a dirty rebuild, delete all DTBs and DTBOs so that they
+                # won't be erraneously copied from a build for a different device/platform
+                find "$KERNEL_TMP/arch/arm64/boot/dts/{qcom,somc}/" \( -name *.dtb -o -name *.dtbo \) -delete 2>/dev/null || true
 
                 echo "================================================="
                 echo "Platform -> ${platform} :: Device -> $device"
@@ -58,12 +62,14 @@ for platform in $PLATFORMS; do \
                 echo "Copying new kernel image ..."
                 cp "$KERNEL_TMP/arch/arm64/boot/Image$comp$dtb" "$KERNEL_TOP/common-kernel/kernel$dtb-$device"
                 if [ $APENDED_DTB = "false" ]; then
-                   find "$KERNEL_TMP/arch/arm64/boot/dts/qcom/" -name *.dtb -exec cp {} "$KERNEL_TOP/common-kernel/" \;
+                    mkdir -p "$KERNEL_TOP/common-kernel/$device/"
+                    # TODO: Be explicit about these names
+                    find "$KERNEL_TMP/arch/arm64/boot/dts/qcom/" -name *.dtb -exec cp {} "$KERNEL_TOP/common-kernel/$device/" \;
                 fi
                 if [ $DTBO = "true" ]; then
                     # shellcheck disable=SC2046
                     # note: We want wordsplitting in this case.
-                    $MKDTIMG create "$KERNEL_TOP"/common-kernel/dtbo-${device}.img $(find "$KERNEL_TMP"/arch/arm64/boot/dts -name "*.dtbo")
+                    $MKDTIMG create "$KERNEL_TOP"/common-kernel/dtbo-${device}.img $(find "$KERNEL_TMP"/arch/arm64/boot/dts/somc/ -name "*.dtbo")
                 fi
 
             fi
