@@ -22,6 +22,12 @@ for platform in $PLATFORMS; do \
             APENDED_DTB="false"
             DTBO="true"
             ;;
+        murray)
+            DEVICE=$MURRAY
+            COMPRESSED="false"
+            APENDED_DTB="false"
+            DTBO="true"
+            ;;
     esac
 
     if [ $COMPRESSED = "true" ]; then
