@@ -2,7 +2,6 @@
 
 . "${0%/*}/build_shared_vars.sh"
 
-
 CLANG_A11=$ANDROID_ROOT/prebuilts/clang/host/linux-x86/clang-r353983c/bin/
 CLANG_A12=$ANDROID_ROOT/prebuilts/clang/host/linux-x86/clang-r416183b/bin/
 CLANG_A13=$ANDROID_ROOT/prebuilts/clang/host/linux-x86/clang-r450784d/bin/
@@ -20,7 +19,6 @@ fi
 
 # Build command
 BUILD_ARGS="LLVM=1 LLVM_IAS=1"
-
 
 PATH=$CLANG:$PATH
 # source shared parts
