@@ -44,8 +44,10 @@ fi
 
 SAGAMI="pdx214 pdx215"
 MURRAY="pdx225"
+ZAMBEZI="pdx235"
 
-PLATFORMS="sagami murray"
+
+PLATFORMS="sagami murray zambezi"
 
 # Mkdtimg tool
 MKDTIMG=$ANDROID_ROOT/out/host/linux-x86/bin/mkdtimg

@@ -34,8 +34,13 @@ for platform in $PLATFORMS; do \
             APENDED_DTB="false"
             DTBO="true"
             ;;
+        zambezi)
+            DEVICE=$ZAMBEZI
+            COMPRESSED="false"
+            APENDED_DTB="false"
+            DTBO="true"
+            ;;
     esac
-
     if [ "$COMPRESSED" = "true" ]; then
         comp=".gz"
     fi
